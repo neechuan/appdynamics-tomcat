@@ -11,7 +11,7 @@ ENV TOMCAT_MAJOR=8 \
 
 #ENV CATALINA_OPTS='-javaagent:/home/appuser/AppServerAgent/javaagent.jar -Dappdynamics.controller.hostName=lab-garydockerlab-gzvlnw1g.srv.ravcloud.com -Dappdynamics.controller.port=8090 -Dappdynamics.controller.ssl.enabled=false -Dappdynamics.agent.applicationName=sample -Dappdynamics.agent.tierName=sample-tier -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=sample-node -Dappdynamics.agent.accountName=customer1 -Dappdynamics.agent.accountAccessKey=1269b04b-d6d9-4632-bee0-dc08417b17e4'
 
-ENV CATALINA_OPTS='-javaagent:/home/appuser/AppServerAgent/javaagent.jar -Dappdynamics.controller.hostName=$CONTROLLER_HOST -Dappdynamics.controller.port=8090 -Dappdynamics.controller.ssl.enabled=false -Dappdynamics.agent.applicationName=$APP_NAME -Dappdynamics.agent.tierName=$TIER_NAME -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$TIER_NAME -Dappdynamics.agent.accountName=$ACCOUNT_NAME -Dappdynamics.agent.accountAccessKey=$ACCESS_KEY'
+ENV CATALINA_OPTS='-javaagent:/home/appuser/AppServerAgent/javaagent.jar -Dappdynamics.controller.hostName=$CONTROLLER_HOST -Dappdynamics.controller.port=$CONTROLLER_PORT -Dappdynamics.controller.ssl.enabled=false -Dappdynamics.agent.applicationName=$APP_NAME -Dappdynamics.agent.tierName=$TIER_NAME -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$TIER_NAME -Dappdynamics.agent.accountName=$ACCOUNT_NAME -Dappdynamics.agent.accountAccessKey=$ACCESS_KEY'
 
 #RUN apk upgrade --update && \
 RUN apk add --update curl
