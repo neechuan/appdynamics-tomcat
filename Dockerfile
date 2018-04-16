@@ -9,9 +9,14 @@ ENV TOMCAT_MAJOR=8 \
     CATALINA_OUT=/dev/null \
     AGENT_HOME=/home/appuser/AppServerAgent
 
-#ENV CATALINA_OPTS='-javaagent:/home/appuser/AppServerAgent/javaagent.jar -Dappdynamics.controller.hostName=lab-garydockerlab-gzvlnw1g.srv.ravcloud.com -Dappdynamics.controller.port=8090 -Dappdynamics.controller.ssl.enabled=false -Dappdynamics.agent.applicationName=sample -Dappdynamics.agent.tierName=sample-tier -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=sample-node -Dappdynamics.agent.accountName=customer1 -Dappdynamics.agent.accountAccessKey=1269b04b-d6d9-4632-bee0-dc08417b17e4'
+ENV CATALINA_OPTS='-javaagent:/home/appuser/AppServerAgent/javaagent.jar -Dappdynamics.controller.ssl.enabled=false -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=node'
 
-ENV CATALINA_OPTS='-javaagent:/home/appuser/AppServerAgent/javaagent.jar -Dappdynamics.controller.hostName=$CONTROLLER_HOST -Dappdynamics.controller.port=$CONTROLLER_PORT -Dappdynamics.controller.ssl.enabled=false -Dappdynamics.agent.applicationName=$APP_NAME -Dappdynamics.agent.tierName=$TIER_NAME -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$TIER_NAME -Dappdynamics.agent.accountName=$ACCOUNT_NAME -Dappdynamics.agent.accountAccessKey=$ACCESS_KEY'
+#ENV APPDYNAMICS_CONTROLLER_HOST_NAME=lab-garydockerlab-gzvlnw1g.srv.ravcloud.com
+#ENV APPDYNAMICS_CONTROLLER_PORT=8090
+#ENV APPDYNAMICS_AGENT_ACCOUNT_NAME=customer1
+#ENV APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=1269b04b-d6d9-4632-bee0-dc08417b17e4
+#ENV APPDYNAMICS_AGENT_APPLICATION_NAME=sample
+#ENV APPDYNAMICS_AGENT_TIER_NAME=sample-tier
 
 #RUN apk upgrade --update && \
 RUN apk add --update curl
@@ -26,14 +31,15 @@ RUN curl -jksSL -o /tmp/apache-tomcat.tar.gz http://archive.apache.org/dist/tomc
     tar -C /home/appuser -xf /tmp/apache-tomcat.tar && \
     rm -rf /tmp/* /var/cache/apk/*
 
-COPY sample.war /tmp/sample.war
-COPY AppServerAgent-4.4.2.22394.zip /tmp/AppServerAgent.zip
 COPY tomcat8/logging.properties ${TOMCAT_HOME}/conf/logging.properties
 COPY tomcat8/server.xml ${TOMCAT_HOME}/conf/server.xml
 
+RUN curl -jksSL -o /tmp/AppServerAgent.zip http://lab-garydockerlab-gzvlnw1g.srv.ravcloud.com/AppServerAgent-4.4.2.22394.zip && \
+    curl -jksSL -o /tmp/sample.war http://lab-garydockerlab-gzvlnw1g.srv.ravcloud.com/sample.war
+
 RUN unzip /tmp/sample.war -d ${TOMCAT_HOME}/webapps/sample && \
     unzip /tmp/AppServerAgent.zip -d ${AGENT_HOME}
-
+    
 RUN addgroup -g 1000 -S appuser && \
     adduser -u 1000 -S appuser -G appuser && \
     chmod -R 775 /home/appuser && \
