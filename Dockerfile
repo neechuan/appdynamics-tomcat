@@ -34,8 +34,10 @@ RUN curl -jksSL -o /tmp/apache-tomcat.tar.gz http://archive.apache.org/dist/tomc
 COPY tomcat8/logging.properties ${TOMCAT_HOME}/conf/logging.properties
 COPY tomcat8/server.xml ${TOMCAT_HOME}/conf/server.xml
 
-RUN curl -jksSL -o /tmp/AppServerAgent.zip http://lab-garydockerlab-gzvlnw1g.srv.ravcloud.com/AppServerAgent-4.4.2.22394.zip && \
-    curl -jksSL -o /tmp/sample.war http://lab-garydockerlab-gzvlnw1g.srv.ravcloud.com/sample.war
+#RUN curl -jksSL -o /tmp/AppServerAgent.zip http://lab-garydockerlab-gzvlnw1g.srv.ravcloud.com/AppServerAgenit.zip && \
+#    curl -jksSL -o /tmp/sample.war http://lab-garydockerlab-gzvlnw1g.srv.ravcloud.com/sample.war
+ADD sample.war /tmp 
+ADD AppServerAgent.zip /tmp
 
 RUN unzip /tmp/sample.war -d ${TOMCAT_HOME}/webapps/sample && \
     unzip /tmp/AppServerAgent.zip -d ${AGENT_HOME}
